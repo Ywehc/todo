@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>To Do List</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    </head>
+    <body> 
+        <div>
+                <input  type="text" placeholder="Add a new To Do" id="input">
+                <button onclick="newToDo(); clearInput()" >Enter</button>
+        </div>
+        
+        <div class="list-container" id="listContainer">
+            <ul id="result">
+
+            </ul>
+        </div>
+        <script>
+            const inputName = document.getElementById("input");
+            const listContainer = document.getElementById("result");
+            let todos = [];
+
+            function updateResults() {
+                //iterate over all the array items and returns a single value.
+                listItems = todos.reduce((result, item) => {
+                    // Add a string to the result for the current item.
+                    result += `<li class="todo">${item}<div class="controls">
+                    <span class="check" ></span><span class="delete">&#x1F5D1</span></div></li>`;
+                    return result;
+                }, ''); //'' is an empty string, it is the initial value result.
+                // Get the element from the DOM in which to display the list, this should be an ul or ol
+                resultElement = document.getElementById('result');
+                // Set inner HTML
+                resultElement.innerHTML = listItems;
+            }    
+
+            function newToDo() {
+                todos.push(inputName.value);
+                console.log(todos);
+                updateResults();
+            }
+
+            function clearInput() {
+                document.getElementById('input').value = '';
+            }
+
+        updateResults();
+
+        // listen to all clicks on your page
+            window.addEventListener('click', (event) => {
+                // if the clicked element has a class named check
+                if (event.target.classList.contains('check')) {
+                    // remove or add the class checked only from this element
+                    event.target.classList.toggle('checked')
+                }
+            })
+            
+        </script>
+    </body>
+</html>
