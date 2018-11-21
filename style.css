@@ -18,6 +18,15 @@ body {
                 padding: 0;
                 width: 100%;
             }
+
+            ul li:nth-child(odd) {
+                background: #f9f9f9;
+            }
+
+            ul li:hover {
+                background: #ddd;
+            }
+
             .todo {
                 list-style-type: none;
                 font-size: 150%;

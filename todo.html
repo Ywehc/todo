@@ -19,24 +19,38 @@
 
             </ul>
         </div>
+        <button id="button-id"  onclick="deleteAll()">Delete All</button>
         <script>
             const inputName = document.getElementById("input");
             const listContainer = document.getElementById("result");
             let todos = [];
+
+            
 
             function updateResults() {
                 //iterate over all the array items and returns a single value.
                 listItems = todos.reduce((result, item) => {
                     // Add a string to the result for the current item.
                     result += `<li class="todo">${item}<div class="controls">
-                    <span class="check" ></span><span class="delete">&#x1F5D1</span></div></li>`;
+                    <span class="check" ></span><span class="delete" onClick="deleteToDo(this)">&#x1F5D1</span></div></li>`;
                     return result;
                 }, ''); //'' is an empty string, it is the initial value result.
                 // Get the element from the DOM in which to display the list, this should be an ul or ol
                 resultElement = document.getElementById('result');
                 // Set inner HTML
                 resultElement.innerHTML = listItems;
-            }    
+                hideButton();
+            }  
+
+            function hideButton() {
+                    var elem = document.getElementById('button-id');
+                    if (todos === undefined || todos.length == 0) {
+                        elem.style.display = 'none';
+                    } else {
+                        elem.style.display = 'block';
+                    }
+                }
+            
 
             function newToDo() {
                 todos.push(inputName.value);
@@ -48,16 +62,27 @@
                 document.getElementById('input').value = '';
             }
 
-        updateResults();
+            function deleteToDo(e) {
+                e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
+            }
 
-        // listen to all clicks on your page
-            window.addEventListener('click', (event) => {
-                // if the clicked element has a class named check
-                if (event.target.classList.contains('check')) {
-                    // remove or add the class checked only from this element
-                    event.target.classList.toggle('checked')
-                }
-            })
+        
+        updateResults();
+        
+        
+
+        function deleteAll() {
+                todos = [];
+                updateResults();
+            }
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('check')) {
+                event.target.classList.toggle('checked')
+            }
+            if (event.target.classList.contains('delete')) {
+                event.target.classList.toggle('deleted');
+            }
+        });
             
         </script>
     </body>
