@@ -10,8 +10,11 @@
     </head>
     <body> 
         <div>
-                <input  type="text" placeholder="Add a new To Do" id="input">
-                <button onclick="newToDo(); clearInput()" >Enter</button>
+            <h1> My To Do's</h1>
+            <input type="text" placeholder="Add a new To Do" id="input" height="200" maxlength="25" />
+        </div>
+        <div>
+                <button id="submit" onclick="newToDo(); clearInput()" >Enter</button>
         </div>
         
         <div class="list-container" id="listContainer">
@@ -19,42 +22,48 @@
 
             </ul>
         </div>
-        <button id="button-id"  onclick="deleteAll()">Delete All</button>
+        <button id="delete-all"  onclick="deleteAll()">Delete All</button>
         <script>
             const inputName = document.getElementById("input");
             const listContainer = document.getElementById("result");
             let todos = [];
-
-            
 
             function updateResults() {
                 //iterate over all the array items and returns a single value.
                 listItems = todos.reduce((result, item) => {
                     // Add a string to the result for the current item.
                     result += `<li class="todo">${item}<div class="controls">
-                    <span class="check" ></span><span class="delete" onClick="deleteToDo(this)">&#x1F5D1</span></div></li>`;
+                    <span class="checkbox" ></span><span class="delete" onClick="deleteToDo(this)">&#x1F5D1</span></div></li>`;
                     return result;
-                }, ''); //'' is an empty string, it is the initial value result.
+                }, ''); //''  is the initial value result.
                 // Get the element from the DOM in which to display the list, this should be an ul or ol
                 resultElement = document.getElementById('result');
                 // Set inner HTML
                 resultElement.innerHTML = listItems;
                 hideButton();
-            }  
+            }
+
+            input.addEventListener("keyup", function (event) {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    document.getElementById("submit").click();
+                }
+            });  
 
             function hideButton() {
-                    var elem = document.getElementById('button-id');
+                    var elem = document.getElementById('delete-all');
                     if (todos === undefined || todos.length == 0) {
                         elem.style.display = 'none';
                     } else {
                         elem.style.display = 'block';
                     }
                 }
-            
+        
 
-            function newToDo() {
-                todos.push(inputName.value);
-                console.log(todos);
+            function newToDo() {                
+                if (inputName.value.length !== 0) {
+                    todos.push(inputName.value);
+                }
                 updateResults();
             }
 
@@ -66,7 +75,10 @@
                 e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
             }
 
-        
+            function lineThrough(e) {
+                e.parentNode.classList.add(".")
+            }
+
         updateResults();
         
         
@@ -75,14 +87,23 @@
                 todos = [];
                 updateResults();
             }
+
         window.addEventListener('click', (event) => {
-            if (event.target.classList.contains('check')) {
-                event.target.classList.toggle('checked')
+            if (event.target.classList.contains('checkbox')) {
+                event.target.classList.toggle('checked');
+                event.target.parentNode.parentNode.classList.toggle('line');
             }
             if (event.target.classList.contains('delete')) {
                 event.target.classList.toggle('deleted');
             }
         });
+
+        inputName.addEventListener("keyup", function (event) {
+                event.preventDefault();
+                if (event.keycode === 13) {
+                    document.getElementById("input").click();
+                }
+            });
             
         </script>
     </body>
